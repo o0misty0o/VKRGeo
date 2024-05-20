@@ -18,7 +18,6 @@ class PostsFragment : Fragment() {
     ): View? {
         _binding = FragmentPostsBinding.inflate(inflater, container, false)
 
-
         return binding.root
     }
 
