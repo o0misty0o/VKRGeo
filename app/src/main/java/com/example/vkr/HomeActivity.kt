@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.vkr.bottomnav.map.MapFragment
+import com.example.vkr.bottomnav.posts.PostsFragment
 import com.example.vkr.bottomnav.profile.ProfileFragment
 import com.example.vkr.databinding.ActivityHomeBinding
 
@@ -34,9 +35,9 @@ class HomeActivity : AppCompatActivity() {
                     supportFragmentManager.beginTransaction().replace(binding.fragmentContainer.id, ProfileFragment()).commit()
                     true
                 }
-                R.id.profile -> {
+                R.id.posts -> {
                     // Действия при выборе элемента "Posts"
-                    supportFragmentManager.beginTransaction().replace(binding.fragmentContainer.id, ProfileFragment()).commit()
+                    supportFragmentManager.beginTransaction().replace(binding.fragmentContainer.id, PostsFragment()).commit()
                     true
                 }
                 else -> false
