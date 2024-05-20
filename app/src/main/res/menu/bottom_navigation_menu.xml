@@ -10,4 +10,10 @@ android:icon="@drawable/map_icon"
         android:title="Profile"
         android:icon="@drawable/profile_icon"
         />
+
+    <item
+        android:id="@+id/posts"
+        android:title="Posts"
+        android:icon="@drawable/posts_icon"
+        />
 </menu>

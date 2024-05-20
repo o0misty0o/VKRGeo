@@ -21,15 +21,14 @@
         app:layout_constraintTop_toTopOf="@+id/profile_image_view" />
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_image_view"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:id="@+id/profile_image_view"
+        android:layout_marginTop="55dp"
+        android:src="@drawable/profile_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="50dp"
-        android:src="@drawable/profile_icon"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/username_tv"
@@ -44,5 +43,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_image_view"
         tools:text="Username" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/ubuntu_medium"
+        android:text="Ваш профиль"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
