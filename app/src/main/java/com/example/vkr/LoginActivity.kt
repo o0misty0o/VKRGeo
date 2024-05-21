@@ -3,18 +3,12 @@ package com.example.vkr
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.vkr.databinding.ActivityLoginBinding
-import com.example.vkr.databinding.ActivityMainBinding
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.auth
 
 class LoginActivity : AppCompatActivity() {
@@ -54,26 +48,6 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-//        binding.loginBtn.setOnClickListener(View.OnClickListener {
-//            if (binding.emailEt.text.toString().isEmpty() || binding.passwordEt.text.toString().isEmpty()){
-//                Toast.makeText(applicationContext,"fields cannot be empty", Toast.LENGTH_SHORT).show()
-//            }else{
-////                FirebaseAuth.getInstance().signInWithEmailAndPassword(binding.emailEt.text.toString(),
-////                    binding.passwordEt.text.toString()
-//
-//                val email = binding.emailEt.text.toString()
-//                val password = binding.passwordEt.text.toString()
-//                auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener{
-//                    if (it.isSuccessful){
-//                        startActivity(Intent(this,MainActivity::class.java))
-//                    }
-//                }
-//
-//
-//
-//
-//            }
-//        })
     }
 
     private fun checkFields(): Boolean {

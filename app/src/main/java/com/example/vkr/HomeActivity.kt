@@ -3,6 +3,7 @@ package com.example.vkr
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.example.vkr.bottomnav.map.MapFragment
 import com.example.vkr.bottomnav.posts.PostsFragment
 import com.example.vkr.bottomnav.profile.ProfileFragment
@@ -19,31 +20,40 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-        supportFragmentManager.beginTransaction().replace(binding.fragmentContainer.id, MapFragment()).commit()
-
+        // Обработайте Intent, чтобы открыть нужный фрагмент
+        val navigateTo = intent.getStringExtra("navigateTo")
+        if (navigateTo == "PostsFragment") {
+            openFragment(PostsFragment())
+        } else {
+            // Открыть MapFragment по умолчанию
+            openFragment(MapFragment())
+        }
 
         binding.bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.map -> {
                     // Действия при выборе элемента "Map"
-                    supportFragmentManager.beginTransaction().replace(binding.fragmentContainer.id, MapFragment()).commit()
+                    openFragment(MapFragment())
                     true
                 }
                 R.id.profile -> {
                     // Действия при выборе элемента "Profile"
-                    supportFragmentManager.beginTransaction().replace(binding.fragmentContainer.id, ProfileFragment()).commit()
+                    openFragment(ProfileFragment())
                     true
                 }
                 R.id.posts -> {
                     // Действия при выборе элемента "Posts"
-                    supportFragmentManager.beginTransaction().replace(binding.fragmentContainer.id, PostsFragment()).commit()
+                    openFragment(PostsFragment())
                     true
                 }
                 else -> false
             }
         }
     }
+
+    private fun openFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(binding.fragmentContainer.id, fragment)
+            .commit()
+    }
 }
-
-
