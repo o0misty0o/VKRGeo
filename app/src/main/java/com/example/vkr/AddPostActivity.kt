@@ -25,5 +25,8 @@ class AddPostActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+
+
+
     }
 }
