@@ -84,19 +84,6 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
 
-//        if (binding.emailEt.text.toString().isEmpty() || binding.passwordEt.text.toString().isEmpty() || binding.loginEt.text.toString().isEmpty()){
-//            Toast.makeText(applicationContext,"fields cannot be empty", Toast.LENGTH_SHORT).show()
-//        }else{
-//            val email = binding.emailEt.text.toString()
-//            val password = binding.passwordEt.text.toString()
-//            auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener{
-//                val userInfo: HashMap<String, String> = HashMap()
-//                userInfo.put("email",binding.emailEt.text.toString())
-//                userInfo.put("login",binding.loginEt.text.toString())
-//                FirebaseDatabase.getInstance().reference.child("Users").child(FirebaseAuth.getInstance().currentUser.uid.)
-//            }
-//        }
-
     }
 
     private fun checkFields(): Boolean{
