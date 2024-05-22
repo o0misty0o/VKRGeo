@@ -74,7 +74,7 @@ dependencies {
     implementation("com.google.firebase:firebase-storage:21.0.0")
 
     implementation ("com.yandex.android:maps.mobile:4.6.1-full")
-
+    implementation ("com.squareup.picasso:picasso:2.71828")
 
 
 
