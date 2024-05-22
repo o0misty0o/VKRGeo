@@ -171,13 +171,6 @@
             android:fontFamily="@font/ubuntu_medium"
             android:textSize="12sp" />
 
-        <TextView
-            android:id="@+id/coord2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/ubuntu_medium"
-            android:textSize="12sp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

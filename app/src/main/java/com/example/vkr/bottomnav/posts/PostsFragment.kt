@@ -23,6 +23,7 @@ class PostsFragment : Fragment() {
         binding.addpostBtn.setOnClickListener {
             // Создайте Intent для перехода на новое Activity
             val intent = Intent(activity, AddPostActivity::class.java)
+            intent.putExtra("window", "posts")
             startActivity(intent)
         }
 
