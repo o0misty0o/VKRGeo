@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Patterns
+import android.provider.MediaStore
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.vkr.databinding.ActivityAddPostBinding
@@ -14,6 +14,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.database.FirebaseDatabase
 import java.util.Date
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.widget.ImageView
 
 
 class AddPostActivity : AppCompatActivity() {
@@ -78,18 +81,36 @@ class AddPostActivity : AppCompatActivity() {
         }
     }
 
+    fun getBitmapFromImageView(imageView: ImageView): Bitmap? {
+        // Получаем URI изображения из ImageView
+        val drawable = imageView.drawable
+        return if (drawable != null) {
+            // Преобразуем Drawable в Bitmap
+            val bitmapDrawable = drawable as BitmapDrawable
+            bitmapDrawable.bitmap
+        } else {
+            null
+        }
+    }
+
     private fun createAndPublishPost(latitude: Double, longitude: Double) {
         val postTitle = binding.titleEt.text.toString()
         val postText = binding.textTv.text.toString()
-        val postImage = binding.newpostIv.toString()
+        //val postImage = binding.newpostIv.toString()
         val postCoord1 = latitude.toString()
         val postCoord2 = longitude.toString()
         val user = auth.currentUser
 
+
+        val newpostIv: ImageView = findViewById(R.id.newpost_iv)
+        // Получаем Bitmap из ImageView
+        val bitmap: Bitmap? = getBitmapFromImageView(newpostIv)
+
+
         if (user != null) {
             val userName = user.displayName ?: user.email ?: "Anonymous"
             val postItem = PostItem().apply {
-                this.imageLink = postImage
+                this.imageLink = bitmap.toString()
                 this.postTitle = postTitle
                 this.postText = postText
                 this.postCoord1 = postCoord1
