@@ -103,6 +103,7 @@ class AddPostActivity : AppCompatActivity() {
 
 
         val newpostIv: ImageView = findViewById(R.id.newpost_iv)
+
         // Получаем Bitmap из ImageView
         val bitmap: Bitmap? = getBitmapFromImageView(newpostIv)
 
