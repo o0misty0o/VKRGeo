@@ -74,7 +74,6 @@ class RegisterActivity : AppCompatActivity() {
                             Log.d("Firebase", "uid = null")
                         }
 
-
                         Toast.makeText(this, "Account created successfuly!", Toast.LENGTH_SHORT)
                             .show()
                     } else {
