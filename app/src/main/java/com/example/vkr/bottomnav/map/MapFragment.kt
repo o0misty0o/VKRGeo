@@ -26,11 +26,18 @@ class MapFragment : Fragment() {
     private val binding get() = _binding!!
     private val startLocation = Point(59.224209, 39.883676) // координаты стартовой точки
     private val zoomValue = 15.0f // Примерное значение зума
+    private lateinit var targetLocation: Point
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setApiKeyOnce()
         MapKitFactory.initialize(requireContext())
+
+        arguments?.let {
+            val latitude = it.getDouble("latitude")
+            val longitude = it.getDouble("longitude")
+            targetLocation = Point(latitude, longitude)
+        }
     }
 
     override fun onCreateView(

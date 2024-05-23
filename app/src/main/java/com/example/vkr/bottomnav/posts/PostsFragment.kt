@@ -1,7 +1,9 @@
 package com.example.vkr.bottomnav.posts
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,15 +25,15 @@ class PostsFragment : Fragment() {
     private lateinit var postAdapter: PostAdapter
     private val postList: MutableList<PostItem> = mutableListOf()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
         _binding = FragmentPostsBinding.inflate(inflater, container, false)
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance().reference
 
         // Настройка RecyclerView
         binding.postsRv.layoutManager = LinearLayoutManager(context)
+
         postAdapter = PostAdapter(postList) { post ->
             val intent = Intent(activity, PostDetailActivity::class.java)
             intent.putExtra("post", post)
@@ -53,20 +55,27 @@ class PostsFragment : Fragment() {
 
     private fun loadPosts() {
         val userId = auth.currentUser?.uid
+        println("from fun loadPosts: "+userId)
         userId?.let {
             database.child("posts").orderByChild("userId").equalTo(it)
                 .addValueEventListener(object : ValueEventListener {
+                    @SuppressLint("NotifyDataSetChanged")
                     override fun onDataChange(snapshot: DataSnapshot) {
                         postList.clear()
                         for (postSnapshot in snapshot.children) {
                             val post = postSnapshot.getValue(PostItem::class.java)
-                            post?.let { postList.add(it) }
+                            if (post != null) {
+                                postList.add(post)
+                                Log.e("PostsFragment", "No problem with post finding!!")
+                            } else {
+                                Log.e("PostsFragment", "Post is null")
+                            }
                         }
                         postAdapter.notifyDataSetChanged()
                     }
 
                     override fun onCancelled(error: DatabaseError) {
-                        // Handle error
+                        Log.e("PostsFragment", "Failed to load posts", error.toException())
                     }
                 })
         }

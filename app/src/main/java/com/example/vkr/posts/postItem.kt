@@ -13,6 +13,7 @@ class PostItem() : Parcelable {
     var postCoord2: String = ""
     var date: String = ""
     var userName: String = ""
+    var userId: String = ""
 
     constructor(parcel: Parcel) : this() {
         uuid = parcel.readString() ?: ""
@@ -23,6 +24,7 @@ class PostItem() : Parcelable {
         postCoord2 = parcel.readString() ?: ""
         date = parcel.readString() ?: ""
         userName = parcel.readString() ?: ""
+        userId = parcel.readString() ?: ""
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -34,6 +36,7 @@ class PostItem() : Parcelable {
         parcel.writeString(postCoord2)
         parcel.writeString(date)
         parcel.writeString(userName)
+        parcel.writeString(userId)
     }
 
     override fun describeContents(): Int {

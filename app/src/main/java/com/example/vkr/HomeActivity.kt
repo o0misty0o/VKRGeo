@@ -1,5 +1,6 @@
 package com.example.vkr
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -23,7 +24,15 @@ class HomeActivity : AppCompatActivity() {
         // Обработайте Intent, чтобы открыть нужный фрагмент
         val navigateTo = intent.getStringExtra("navigateTo")
         if (navigateTo == "PostsFragment") {
-            openFragment(PostsFragment())
+            val latitude = intent.getDoubleExtra("latitude", 0.0)
+            val longitude = intent.getDoubleExtra("longitude", 0.0)
+            val fragment = MapFragment.newInstance().apply {
+                arguments = Bundle().apply {
+                    putDouble("latitude", latitude)
+                    putDouble("longitude", longitude)
+                }
+            }
+            supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit()
         } else {
             // Открыть MapFragment по умолчанию
             openFragment(MapFragment())
@@ -48,6 +57,18 @@ class HomeActivity : AppCompatActivity() {
                 }
                 else -> false
             }
+        }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        intent?.let { handleIntent(it) } // Обработать новый интент
+    }
+
+    private fun handleIntent(intent: Intent) {
+        val navigateTo = intent.getStringExtra("navigateTo")
+        if (navigateTo == "PostsFragment") {
+            openFragment(PostsFragment())
         }
     }
 
