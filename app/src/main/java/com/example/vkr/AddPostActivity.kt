@@ -4,22 +4,21 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.vkr.databinding.ActivityAddPostBinding
 import com.example.vkr.posts.PostItem
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
 import java.util.Date
+import android.util.Log
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
-import android.util.Log
 import android.widget.ImageView
-import com.google.firebase.storage.FirebaseStorage
-
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 
 class AddPostActivity : AppCompatActivity() {
 
@@ -27,6 +26,9 @@ class AddPostActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddPostBinding
     private val PICK_IMAGE_REQUEST = 1
     private var imageUri: Uri? = null
+    private var latitude: Double = 0.0
+    private var longitude: Double = 0.0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddPostBinding.inflate(layoutInflater)
@@ -35,8 +37,8 @@ class AddPostActivity : AppCompatActivity() {
         auth = Firebase.auth
 
         // Получение координат из Intent
-        val latitude = intent.getDoubleExtra("latitude", 0.0)
-        val longitude = intent.getDoubleExtra("longitude", 0.0)
+        latitude = intent.getDoubleExtra("latitude", 0.0)
+        longitude = intent.getDoubleExtra("longitude", 0.0)
 
         // Установка координат в TextView
         val coordTextView = binding.coord1
@@ -50,20 +52,16 @@ class AddPostActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // Находим ImageView по его id
-        val imageView = binding.newpostIv
         // Устанавливаем слушатель нажатия на imageView
-        imageView.setOnClickListener {
+        binding.newpostIv.setOnClickListener {
             openGallery()
         }
 
         binding.publishButton.setOnClickListener {
             if (checkFields()) {
-                createAndPublishPost(latitude, longitude)
+                uploadImage(imageUri)
             }
         }
-
-
     }
 
     private fun openGallery() {
@@ -77,16 +75,14 @@ class AddPostActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
-            val imageUri = data.data
+            imageUri = data.data
             binding.newpostIv.setImageURI(imageUri)
         }
     }
 
-    fun getBitmapFromImageView(imageView: ImageView): Bitmap? {
-        // Получаем URI изображения из ImageView
+    private fun getBitmapFromImageView(imageView: ImageView): Bitmap? {
         val drawable = imageView.drawable
         return if (drawable != null) {
-            // Преобразуем Drawable в Bitmap
             val bitmapDrawable = drawable as BitmapDrawable
             bitmapDrawable.bitmap
         } else {
@@ -94,35 +90,25 @@ class AddPostActivity : AppCompatActivity() {
         }
     }
 
-    private fun createAndPublishPost(latitude: Double, longitude: Double) {
+    private fun createAndPublishPost(imageLink: String) {
         val postTitle = binding.titleEt.text.toString()
         val postText = binding.textTv.text.toString()
-        //val postImage = binding.newpostIv.toString()
         val postCoord1 = latitude.toString()
         val postCoord2 = longitude.toString()
         val user = auth.currentUser
-
-
-
-        val newpostIv: ImageView = findViewById(R.id.newpost_iv)
-
-        // Получаем Bitmap из ImageView
-        val bitmap: Bitmap? = getBitmapFromImageView(newpostIv)
-
 
         if (user != null) {
             val userName = user.displayName ?: user.email ?: "Anonymous"
             val userID = user.uid
             val postItem = PostItem().apply {
-                this.imageLink = bitmap.toString()
+                this.imageLink = imageLink
                 this.postTitle = postTitle
                 this.postText = postText
                 this.postCoord1 = postCoord1
                 this.postCoord2 = postCoord2
-                this.date = Date().toString() //  формат даты
+                this.date = Date().toString()
                 this.userName = userName
-                this.userId =userID
-
+                this.userId = userID
             }
 
             // Сохранить postItem в Firebase
@@ -140,19 +126,33 @@ class AddPostActivity : AppCompatActivity() {
         }
     }
 
+    private fun uploadImage(filePath: Uri?) {
+        filePath?.let {
+            val uid = FirebaseAuth.getInstance().currentUser?.uid
+            uid?.let {
+                val storageReference = FirebaseStorage.getInstance().getReference("postsImages/$uid")
+                storageReference.putFile(filePath)
+                    .addOnSuccessListener { taskSnapshot ->
+                        Toast.makeText(this, "Photo upload complete", Toast.LENGTH_SHORT).show()
 
+                        storageReference.downloadUrl.addOnSuccessListener { uri ->
+                            createAndPublishPost(uri.toString())
+                        }.addOnFailureListener { exception ->
+                            Log.e("AddPostActivity", "Failed to get download URL", exception)
+                        }
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.e("AddPostActivity", "Photo upload failed", exception)
+                    }
+            }
+        }
+    }
 
-    private fun checkFields(): Boolean{
-        val title = binding.titleEt.text.toString()
-        if(binding.titleEt.text.toString().isEmpty()){
-            Toast.makeText(applicationContext,"Title cannot be empty", Toast.LENGTH_SHORT).show()
+    private fun checkFields(): Boolean {
+        if (binding.titleEt.text.toString().isEmpty()) {
+            Toast.makeText(applicationContext, "Title cannot be empty", Toast.LENGTH_SHORT).show()
             return false
         }
-//        if (postImage == null) {
-//            Toast.makeText(applicationContext, "Image cannot be empty", Toast.LENGTH_SHORT).show()
-//            return false
-//        }
-
         return true
     }
 }
