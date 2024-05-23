@@ -16,7 +16,9 @@ import com.google.firebase.database.FirebaseDatabase
 import java.util.Date
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.util.Log
 import android.widget.ImageView
+import com.google.firebase.storage.FirebaseStorage
 
 
 class AddPostActivity : AppCompatActivity() {
@@ -35,7 +37,6 @@ class AddPostActivity : AppCompatActivity() {
         // Получение координат из Intent
         val latitude = intent.getDoubleExtra("latitude", 0.0)
         val longitude = intent.getDoubleExtra("longitude", 0.0)
-        val fromWindow = intent.getStringExtra("window")
 
         // Установка координат в TextView
         val coordTextView = binding.coord1
@@ -102,6 +103,7 @@ class AddPostActivity : AppCompatActivity() {
         val user = auth.currentUser
 
 
+
         val newpostIv: ImageView = findViewById(R.id.newpost_iv)
 
         // Получаем Bitmap из ImageView
@@ -110,6 +112,7 @@ class AddPostActivity : AppCompatActivity() {
 
         if (user != null) {
             val userName = user.displayName ?: user.email ?: "Anonymous"
+            val userID = user.uid
             val postItem = PostItem().apply {
                 this.imageLink = bitmap.toString()
                 this.postTitle = postTitle
@@ -118,6 +121,7 @@ class AddPostActivity : AppCompatActivity() {
                 this.postCoord2 = postCoord2
                 this.date = Date().toString() //  формат даты
                 this.userName = userName
+                this.userId =userID
 
             }
 
@@ -135,6 +139,8 @@ class AddPostActivity : AppCompatActivity() {
             Toast.makeText(this, "User not authenticated", Toast.LENGTH_SHORT).show()
         }
     }
+
+
 
     private fun checkFields(): Boolean{
         val title = binding.titleEt.text.toString()
