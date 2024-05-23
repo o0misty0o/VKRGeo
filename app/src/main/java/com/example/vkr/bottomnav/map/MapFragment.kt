@@ -8,30 +8,37 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.example.vkr.R
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.example.vkr.AddPostActivity // Импортируем ваш AddPostActivity
+import com.example.vkr.AddPostActivity
+import com.example.vkr.PostDetailActivity
 import com.example.vkr.databinding.FragmentMapsBinding
+import com.example.vkr.posts.PostItem
+import com.google.firebase.database.*
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CameraPosition
-import com.yandex.mapkit.map.Map
 import com.yandex.mapkit.map.InputListener
+import com.yandex.mapkit.map.Map
+import com.yandex.runtime.image.ImageProvider
 
 class MapFragment : Fragment() {
 
     private var _binding: FragmentMapsBinding? = null
     private val binding get() = _binding!!
-    private val startLocation = Point(59.224209, 39.883676) // координаты стартовой точки
-    private val zoomValue = 15.0f // Примерное значение зума
+    private val startLocation = Point(59.224209, 39.883676)
+    private val zoomValue = 15.0f
     private lateinit var targetLocation: Point
+    private lateinit var database: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setApiKeyOnce()
         MapKitFactory.initialize(requireContext())
+        database = FirebaseDatabase.getInstance().reference.child("posts")
 
         arguments?.let {
             val latitude = it.getDouble("latitude")
@@ -45,7 +52,6 @@ class MapFragment : Fragment() {
     ): View? {
         _binding = FragmentMapsBinding.inflate(inflater, container, false)
 
-        // Запрос разрешения
         requestLocationPermission()
 
         return binding.root
@@ -67,6 +73,9 @@ class MapFragment : Fragment() {
                 // Можно реализовать длительное нажатие, если нужно
             }
         })
+
+        // Загрузка данных из Firebase и добавление маркеров
+        loadPostsAndAddMarkers()
     }
 
     override fun onStop() {
@@ -110,8 +119,8 @@ class MapFragment : Fragment() {
 
     private fun moveToStartLocation() {
         binding.mapview.map.move(
-            CameraPosition(startLocation, zoomValue, 0.0f, 0.0f), // Позиция камеры
-            Animation(Animation.Type.SMOOTH, 2f), // Красивая анимация при переходе на стартовую точку
+            CameraPosition(startLocation, zoomValue, 0.0f, 0.0f),
+            Animation(Animation.Type.SMOOTH, 2f),
             null
         )
     }
@@ -126,6 +135,43 @@ class MapFragment : Fragment() {
         intent.putExtra("longitude", longitude)
         intent.putExtra("window", "map")
         startActivity(intent)
+    }
+
+
+
+    private fun loadPostsAndAddMarkers() {
+        database.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                binding.mapview.map.mapObjects.clear()  // Очистка всех объектов карты перед добавлением новых
+
+                for (postSnapshot in snapshot.children) {
+                    val post = postSnapshot.getValue(PostItem::class.java)
+
+                    if (post != null) {
+                        val point = Point(post.postCoord1.toDouble(), post.postCoord2.toDouble())
+                            val markerimg = R.drawable.marker_icon
+
+                            val marker = binding.mapview.map.mapObjects.addPlacemark(point)
+
+//                          val marker = binding.mapview.map.mapObjects.addPlacemark(
+//                              point, ImageProvider.fromResource(requireContext(), R.drawable.marker_icon)
+//                        )
+                        marker.userData = post
+
+                        marker.addTapListener { _, _ ->
+                            val intent = Intent(requireContext(), PostDetailActivity::class.java)
+                            intent.putExtra("post", post)
+                            startActivity(intent)
+                            true
+                        }
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(requireContext(), "Failed to load posts", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     companion object {
