@@ -25,6 +25,7 @@ class PostDetailActivity : AppCompatActivity() {
             binding.postText.text = it.postText
             binding.coord1.text = it.postCoord1
             binding.coord2.text = it.postCoord2
+
             Picasso.get().load(it.imageLink).into(binding.postImage)
 
             binding.goToMapButton.setOnClickListener {

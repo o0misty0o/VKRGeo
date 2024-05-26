@@ -44,7 +44,7 @@ class RegisterActivity : AppCompatActivity() {
                         //auth.signOut()
                         val userInfo: HashMap<String, String> = HashMap()
                         userInfo.put("email", binding.emailEt.text.toString())
-                        userInfo.put("login", binding.loginEt.text.toString())
+                        userInfo.put("displayName", binding.loginEt.text.toString())
                         userInfo.put("profileImage", "")
 
                         val currentUser = FirebaseAuth.getInstance().currentUser
