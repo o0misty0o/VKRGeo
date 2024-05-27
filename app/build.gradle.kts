@@ -57,22 +57,15 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    // Import the BoM for the Firebase platform
+
+
     implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
-
-    // Add the dependency for the Firebase Authentication library
-    // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation("com.google.firebase:firebase-auth")
-
-    // Also add the dependency for the Google Play services library and specify its version
     implementation("com.google.android.gms:play-services-auth:21.1.1")
     implementation("de.hdodenhof:circleimageview:3.1.0")
-    // Add the dependency for the Realtime Database library
-    // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation("com.google.firebase:firebase-database:21.0.0")
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("com.google.firebase:firebase-storage:21.0.0")
-
     implementation ("com.yandex.android:maps.mobile:4.6.1-full")
     implementation ("com.squareup.picasso:picasso:2.71828")
 

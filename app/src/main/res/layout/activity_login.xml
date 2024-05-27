@@ -17,17 +17,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/image1" />
+        app:srcCompat="@drawable/login_image" />
 
     <TextView
         android:id="@+id/login__title"
         android:layout_width="81dp"
         android:layout_height="41dp"
-        android:layout_marginStart="55dp"
         android:layout_marginTop="35dp"
         android:fontFamily="@font/ubuntu_medium"
         android:text="Login"
         android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/image__register" />
 
@@ -36,9 +36,9 @@
         android:id="@+id/email__lin"
         android:layout_width="wrap_content"
         android:layout_height="54dp"
-        android:layout_marginStart="50dp"
         android:layout_marginTop="35dp"
         android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login__title">
 
@@ -65,9 +65,9 @@
         android:id="@+id/password__lin"
         android:layout_width="wrap_content"
         android:layout_height="54dp"
-        android:layout_marginStart="50dp"
         android:layout_marginTop="18dp"
         android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/email__lin">
 
