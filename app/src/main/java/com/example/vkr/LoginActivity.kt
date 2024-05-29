@@ -52,8 +52,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun checkFields(): Boolean {
         val email = binding.emailEt.text.toString()
-        if (binding.emailEt.text.toString().isEmpty() || binding.passwordEt.text.toString()
-                .isEmpty()
+        if (binding.emailEt.text.toString().isEmpty() || binding.passwordEt.text.toString().isEmpty()
         ) {
             Toast.makeText(applicationContext, "fields cannot be empty", Toast.LENGTH_SHORT).show()
             return false

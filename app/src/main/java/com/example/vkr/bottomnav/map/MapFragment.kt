@@ -149,13 +149,10 @@ class MapFragment : Fragment() {
 
                     if (post != null) {
                         val point = Point(post.postCoord1.toDouble(), post.postCoord2.toDouble())
-                            val markerimg = R.drawable.marker_icon
 
-                            val marker = binding.mapview.map.mapObjects.addPlacemark(point)
+                        val marker = binding.mapview.map.mapObjects.addPlacemark(point,
+                            ImageProvider.fromResource(requireContext(), R.drawable.icon_marker))
 
-//                          val marker = binding.mapview.map.mapObjects.addPlacemark(
-//                              point, ImageProvider.fromResource(requireContext(), R.drawable.marker_icon)
-//                        )
                         marker.userData = post
 
                         marker.addTapListener { _, _ ->
