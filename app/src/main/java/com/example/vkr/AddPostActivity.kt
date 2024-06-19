@@ -112,17 +112,21 @@ class AddPostActivity : AppCompatActivity() {
             }
 
             // Сохранить postItem в Firebase
-            val postsRef = FirebaseDatabase.getInstance().reference.child("posts").child(postItem.uuid)
+            val postsRef = FirebaseDatabase.getInstance().reference.
+            child("posts").child(postItem.uuid)
             postsRef.setValue(postItem).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Toast.makeText(this, "Post published successfully", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Post published successfully",
+                        Toast.LENGTH_SHORT).show()
                     finish()
                 } else {
-                    Toast.makeText(this, "Failed to publish post", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Failed to publish post",
+                        Toast.LENGTH_SHORT).show()
                 }
             }
         } else {
-            Toast.makeText(this, "User not authenticated", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "User not authenticated",
+                Toast.LENGTH_SHORT).show()
         }
     }
 

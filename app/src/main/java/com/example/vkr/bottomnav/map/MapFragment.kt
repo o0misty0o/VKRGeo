@@ -148,15 +148,18 @@ class MapFragment : Fragment() {
                     val post = postSnapshot.getValue(PostItem::class.java)
 
                     if (post != null) {
-                        val point = Point(post.postCoord1.toDouble(), post.postCoord2.toDouble())
+                        val point = Point(post.postCoord1.toDouble(),
+                            post.postCoord2.toDouble())
 
-                        val marker = binding.mapview.map.mapObjects.addPlacemark(point,
-                            ImageProvider.fromResource(requireContext(), R.drawable.icon_marker))
+                        val marker = binding.mapview.map.mapObjects.
+                        addPlacemark(point, ImageProvider.fromResource(requireContext(),
+                            R.drawable.icon_marker))
 
                         marker.userData = post
 
                         marker.addTapListener { _, _ ->
-                            val intent = Intent(requireContext(), PostDetailActivity::class.java)
+                            val intent = Intent(requireContext(),
+                                PostDetailActivity::class.java)
                             intent.putExtra("post", post)
                             startActivity(intent)
                             true

@@ -21,7 +21,7 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Обработайте Intent, чтобы открыть нужный фрагмент
+        // Обработка Intent, чтобы открыть нужный фрагмент
         val navigateTo = intent.getStringExtra("navigateTo")
         if (navigateTo == "PostsFragment") {
             val latitude = intent.getDoubleExtra("latitude", 0.0)
@@ -32,7 +32,8 @@ class HomeActivity : AppCompatActivity() {
                     putDouble("longitude", longitude)
                 }
             }
-            supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit()
+            supportFragmentManager.beginTransaction().
+            replace(R.id.fragment_container, fragment).commit()
         } else {
             // Открыть MapFragment по умолчанию
             openFragment(MapFragment())

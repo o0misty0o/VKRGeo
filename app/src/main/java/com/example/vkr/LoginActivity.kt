@@ -26,7 +26,8 @@ class LoginActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         binding.goRegisterTv.setOnClickListener({
-            startActivity(Intent(this,RegisterActivity::class.java))
+            startActivity(Intent(this,
+                RegisterActivity::class.java))
         })
 
 
